@@ -1,6 +1,24 @@
+<?php
+session_start();
+
+// Check if user is logged in via session
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    // If no session, check for auto-login cookie
+    if (isset($_COOKIE['auto_login']) && $_COOKIE['auto_login'] === 'true') {
+        // Auto-login successful - create session
+        $_SESSION['logged_in'] = true;
+    } else {
+        // No valid session or auto-login cookie - redirect to login
+        header('Location: log-in.php');
+        exit;
+    }
+}
+
+// If reached here, user is logged in - proceed with secure page content
+?>
 <?php include 'config.php'; ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,10 +62,10 @@
   }
 </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-900 min-h-screen dark:text-gray-200">
 
 <!-- 🌐 Modern Navbar -->
-<nav class="bg-white shadow-xl sticky top-0 z-50">
+<nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center py-4">
       <!-- Logo -->
@@ -57,46 +75,50 @@
         </div>
         <div>
           <h1 class="text-2xl font-bold gradient-text">InfoHub</h1>
-          <p class="text-xs text-gray-500">Your Business Directory</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Your Business Directory</p>
         </div>
       </div>
       
       <!-- Desktop Navigation Links -->
       <div class="hidden md:flex space-x-2">
-        <a href="index.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">
+        <a href="index.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300">
           <i class="fa-solid fa-home mr-2"></i>
           <span>Home</span>
         </a>
-        <a href="add_store_card.php" class="flex items-center px-4 py-2 rounded-lg bg-blue-50 text-blue-600 transition-all duration-300">
+        <a href="add_store_form.php" class="flex items-center px-4 py-2 rounded-lg bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 transition-all duration-300">
           <i class="fa-solid fa-plus mr-2"></i>
           <span>Add Store</span>
         </a>
-        <a href="view_store_cards.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">
+        <a href="view_store_cards.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300">
           <i class="fa-solid fa-list mr-2"></i>
           <span>All Stores</span>
+        </a>
+        <a href="logout.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 ">
+          <i class="fa-solid fa-right-from-bracket mr-2"></i>
+          <span>Log Out</span>
         </a>
       </div>
 
       <!-- Mobile menu button -->
       <div class="md:hidden">
-        <button type="button" id="mobile-menu-button" class="text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600">
+        <button type="button" id="mobile-menu-button" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:text-blue-600">
           <i class="fa-solid fa-bars text-xl"></i>
         </button>
       </div>
     </div>
     
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-gray-200">
+    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-gray-200 dark:border-gray-700">
       <div class="flex flex-col space-y-2 mt-2">
-        <a href="index.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">
+        <a href="index.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300">
           <i class="fa-solid fa-home mr-2"></i>
           <span>Home</span>
         </a>
-        <a href="add_store_card.php" class="flex items-center px-4 py-2 rounded-lg bg-blue-50 text-blue-600 transition-all duration-300">
+        <a href="add_store_form.php" class="flex items-center px-4 py-2 rounded-lg bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 transition-all duration-300">
           <i class="fa-solid fa-plus mr-2"></i>
           <span>Add Store</span>
         </a>
-        <a href="view_store_cards.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">
+        <a href="view_store_cards.php" class="flex items-center px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300">
           <i class="fa-solid fa-list mr-2"></i>
           <span>All Stores</span>
         </a>
@@ -110,53 +132,53 @@
   <div class="max-w-4xl mx-auto">
     <!-- Header -->
     <div class="text-center mb-8 fade-in">
-      <h2 class="text-3xl font-bold text-gray-800 mb-2">Add New Store Card</h2>
-      <p class="text-gray-600">Fill in the details below to add a new store to your directory</p>
+      <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">Add New Store Card</h2>
+      <p class="text-gray-600 dark:text-gray-400">Fill in the details below to add a new store to your directory</p>
     </div>
 
     <!-- Form Container -->
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden fade-in" style="animation-delay: 0.1s">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden fade-in" style="animation-delay: 0.1s">
       <form id="storeForm" enctype="multipart/form-data" class="p-6 sm:p-8">
         <!-- Store Information Section -->
         <div class="mb-8">
           <div class="flex items-center mb-6">
-            <div class="bg-blue-100 p-2 rounded-lg mr-3">
-              <i class="fa-solid fa-store text-blue-600"></i>
+            <div class="bg-blue-100 dark:bg-gray-700 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-store text-blue-600 dark:text-gray-100"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-800">Store Information</h3>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Store Information</h3>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Store Name -->
             <div class="md:col-span-2">
-              <label for="store_name" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-signature mr-1 text-blue-500"></i>
+              <label for="store_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-signature mr-1 text-blue-500 dark:text-gray-400"></i>
                 Store Name <span class="text-red-500">*</span>
               </label>
               <input type="text" id="store_name" name="store_name" required
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="Enter store name">
             </div>
 
             <!-- Owner Name -->
             <div>
-              <label for="owner_name" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-user mr-1 text-blue-500"></i>
+              <label for="owner_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-user mr-1 text-blue-500 dark:text-gray-400"></i>
                 Owner Name
               </label>
               <input type="text" id="owner_name" name="owner_name"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="Enter owner name">
             </div>
 
             <!-- Email -->
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-envelope mr-1 text-blue-500"></i>
+              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-envelope mr-1 text-blue-500 dark:text-gray-400"></i>
                 Email Address
               </label>
               <input type="email" id="email" name="email"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="Enter email address">
             </div>
           </div>
@@ -165,32 +187,32 @@
         <!-- Contact Information Section -->
         <div class="mb-8">
           <div class="flex items-center mb-6">
-            <div class="bg-green-100 p-2 rounded-lg mr-3">
-              <i class="fa-solid fa-phone text-green-600"></i>
+            <div class="bg-green-100 dark:bg-gray-700 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-phone text-green-600 dark:text-gray-100"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-800">Contact Information</h3>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Contact Information</h3>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Primary Contact -->
             <div>
-              <label for="contact_number" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-phone mr-1 text-green-500"></i>
+              <label for="contact_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-phone mr-1 text-green-500 dark:text-gray-400"></i>
                 Primary Contact Number
               </label>
               <input type="tel" id="contact_number" name="contact_number"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="Enter primary contact">
             </div>
 
             <!-- Secondary Contact -->
             <div>
-              <label for="contact_number2" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-phone-volume mr-1 text-green-500"></i>
+              <label for="contact_number2" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-phone-volume mr-1 text-green-500 dark:text-gray-400"></i>
                 Secondary Contact Number
               </label>
               <input type="tel" id="contact_number2" name="contact_number2"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="Enter secondary contact">
             </div>
           </div>
@@ -199,43 +221,43 @@
         <!-- Location Information Section -->
         <div class="mb-8">
           <div class="flex items-center mb-6">
-            <div class="bg-purple-100 p-2 rounded-lg mr-3">
-              <i class="fa-solid fa-location-dot text-purple-600"></i>
+            <div class="bg-purple-100 dark:bg-gray-700 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-location-dot text-purple-600 dark:text-gray-100"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-800">Location Information</h3>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Location Information</h3>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Address -->
             <div class="md:col-span-2">
-              <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-map-marker-alt mr-1 text-purple-500"></i>
+              <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-map-marker-alt mr-1 text-purple-500 dark:text-gray-400"></i>
                 Address
               </label>
               <input type="text" id="address" name="address"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="Enter full address">
             </div>
 
             <!-- City -->
             <div>
-              <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-city mr-1 text-purple-500"></i>
+              <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-city mr-1 text-purple-500 dark:text-gray-400"></i>
                 City
               </label>
               <input type="text" id="city" name="city"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="Enter city">
             </div>
 
             <!-- Website -->
             <div>
-              <label for="website" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-globe mr-1 text-purple-500"></i>
+              <label for="website" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-globe mr-1 text-purple-500 dark:text-gray-400"></i>
                 Website
               </label>
               <input type="url" id="website" name="website"
-                     class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300"
+                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                      placeholder="https://example.com">
             </div>
           </div>
@@ -244,24 +266,24 @@
         <!-- Images Section -->
         <div class="mb-8">
           <div class="flex items-center mb-6">
-            <div class="bg-yellow-100 p-2 rounded-lg mr-3">
-              <i class="fa-solid fa-images text-yellow-600"></i>
+            <div class="bg-yellow-100 dark:bg-gray-700 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-images text-yellow-600 dark:text-gray-100"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-800">Store Images</h3>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Store Images</h3>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Front Image -->
             <div>
-              <label for="front_image" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-image mr-1 text-yellow-500"></i>
+              <label for="front_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-image mr-1 text-yellow-500 dark:text-gray-400"></i>
                 Front Image
               </label>
-              <div class="file-upload border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-all duration-300 cursor-pointer">
+              <div class="file-upload border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-400 dark:hover:border-gray-400 transition-all duration-300 cursor-pointer">
                 <input type="file" id="front_image" name="front_image" accept="image/*" 
                        class="hidden" onchange="previewImage(this, 'frontPreview')">
                 <i class="fa-solid fa-upload text-3xl text-gray-400 mb-3"></i>
-                <p class="text-sm text-gray-600 mb-2">Click to upload front image</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Click to upload front image</p>
                 <p class="text-xs text-gray-500">PNG, JPG, JPEG (Max 5MB)</p>
                 <div id="frontPreview" class="mt-3 hidden">
                   <img class="mx-auto h-32 rounded-lg shadow-md">
@@ -271,15 +293,15 @@
 
             <!-- Back Image -->
             <div>
-              <label for="back_image" class="block text-sm font-medium text-gray-700 mb-2">
-                <i class="fa-solid fa-image mr-1 text-yellow-500"></i>
+              <label for="back_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <i class="fa-solid fa-image mr-1 text-yellow-500 dark:text-gray-400"></i>
                 Back Image
               </label>
-              <div class="file-upload border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-all duration-300 cursor-pointer">
+              <div class="file-upload border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-400 dark:hover:border-gray-400 transition-all duration-300 cursor-pointer">
                 <input type="file" id="back_image" name="back_image" accept="image/*" 
                        class="hidden" onchange="previewImage(this, 'backPreview')">
                 <i class="fa-solid fa-upload text-3xl text-gray-400 mb-3"></i>
-                <p class="text-sm text-gray-600 mb-2">Click to upload back image</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Click to upload back image</p>
                 <p class="text-xs text-gray-500">PNG, JPG, JPEG (Max 5MB)</p>
                 <div id="backPreview" class="mt-3 hidden">
                   <img class="mx-auto h-32 rounded-lg shadow-md">
@@ -292,32 +314,32 @@
         <!-- Notes Section -->
         <div class="mb-8">
           <div class="flex items-center mb-6">
-            <div class="bg-red-100 p-2 rounded-lg mr-3">
-              <i class="fa-solid fa-sticky-note text-red-600"></i>
+            <div class="bg-red-100 dark:bg-gray-700 p-2 rounded-lg mr-3">
+              <i class="fa-solid fa-sticky-note text-red-600 dark:text-gray-100"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-800">Additional Notes</h3>
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Additional Notes</h3>
           </div>
           
           <div>
-            <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">
-              <i class="fa-solid fa-pen mr-1 text-red-500"></i>
+            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <i class="fa-solid fa-pen mr-1 text-red-500 dark:text-gray-400"></i>
               Notes
             </label>
             <textarea id="notes" name="notes" rows="4"
-                      class="w-full px-4 py-3 border border-gray-300 rounded-xl form-input focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition-all duration-300 resize-none"
+                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl form-input focus:ring-2 focus:ring-blue-300 dark:focus:ring-gray-500 focus:border-blue-500 dark:focus:border-gray-500 outline-none transition-all duration-300 resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 dark:placeholder-gray-500"
                       placeholder="Enter any additional notes about the store..."></textarea>
           </div>
         </div>
 
         <!-- Submit Button -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-end pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row gap-4 justify-end pt-6 border-t border-gray-200 dark:border-gray-700">
           <button type="button" onclick="window.history.back()" 
-                  class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2">
+                  class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 flex items-center justify-center gap-2">
             <i class="fa-solid fa-arrow-left"></i>
             Back
           </button>
           <button type="submit" id="submitBtn"
-                  class="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+                  class="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-800 dark:to-indigo-800 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-900 dark:hover:to-indigo-900 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
             <i class="fa-solid fa-plus"></i>
             Add Store Card
           </button>
@@ -404,6 +426,57 @@ document.getElementById('storeForm').addEventListener('submit', async e => {
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.querySelector('.bg-white');
   form.classList.add('fade-in');
+});
+
+// Dark Mode Handling
+function setTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+  localStorage.theme = theme;
+}
+
+const savedTheme = localStorage.theme;
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (savedTheme) {
+  setTheme(savedTheme);
+} else {
+  setTheme(prefersDark ? 'dark' : 'light');
+}
+
+function updateToggleButtons() {
+  const toggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')];
+  toggles.forEach(toggle => {
+    if (toggle) {
+      const icon = toggle.querySelector('i');
+      const span = toggle.querySelector('span');
+      if (document.documentElement.classList.contains('dark')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        span.textContent = 'Light Mode';
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        span.textContent = 'Dark Mode';
+      }
+    }
+  });
+}
+
+updateToggleButtons();
+
+const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('mobile-theme-toggle')];
+themeToggles.forEach(toggle => {
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      setTheme(isDark ? 'light' : 'dark');
+      updateToggleButtons();
+    });
+  }
 });
 </script>
 </body>
